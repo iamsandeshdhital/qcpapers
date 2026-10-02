@@ -1,0 +1,87 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qcpapers"
+version = "0.1.0"
+description = "Reproducible reference implementations of landmark quantum computing papers, each validated against an independent classical oracle."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "Apache-2.0" }
+authors = [{ name = "iamsandeshdhital", email = "mesandeshdhital@gmail.com" }]
+keywords = [
+    "quantum-computing",
+    "quantum-algorithms",
+    "variational-algorithms",
+    "phase-estimation",
+    "tomography",
+    "reproducibility",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+
+# numpy is the only hard runtime requirement. The gate library, the statevector
+# simulator and every oracle are implemented against it directly, which is what
+# lets the full test suite run with no SDK, no API key and no GPU. scipy was
+# listed here previously but nothing imports it.
+dependencies = [
+    "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+# Vendor SDKs / simulators. Install only what you need.
+qiskit = ["qiskit>=1.0", "qiskit-aer>=0.13", "qiskit-ibm-runtime>=0.20"]
+cirq = ["cirq-core>=1.2"]
+braket = ["amazon-braket-sdk>=1.70"]
+quil = ["pyquil>=4.0"]
+pennylane = ["pennylane>=0.34"]
+chemistry = ["pyscf>=2.5", "openfermion>=1.5"]
+tensors = ["quimb>=1.3"]
+plotting = ["matplotlib>=3.7", "plotly>=5.15"]
+benchmarks = ["pandas>=2.0", "networkx>=3.1"]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "black>=23.9",
+    "ruff>=0.1",
+    "mypy>=1.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/iamsandeshdhital/qcpapers"
+Repository = "https://github.com/iamsandeshdhital/qcpapers"
+Issues = "https://github.com/iamsandeshdhital/qcpapers/issues"
+
+# No console script yet: a `cli.py` module is listed under "Not yet built" in the
+# README. Adding an entry point pointing at a missing module breaks `pip install`.
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 100
+target-version = ["py39"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.9"
+warn_unused_ignores = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+    "slow: long-running simulation tests",
+    "hardware: requires real quantum hardware credentials",
+]

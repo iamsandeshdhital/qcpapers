@@ -1,0 +1,24 @@
+# Runtime dependency for the core simulator and every algorithm module.
+#
+# numpy is the only hard requirement: the gate library, the statevector
+# simulator, and all oracles are implemented against it directly. The README
+# claims the test suite runs with no SDK and no GPU, and that claim is only
+# true if this file stays this short.
+numpy>=1.24.0
+
+# Development and test tooling.
+#     pip install -r requirements.txt
+#     pip install -e ".[dev]"
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Optional extras, installed on demand rather than by default:
+#     pip install -e ".[qiskit]"     cross-validation against Qiskit
+#     pip install -e ".[cirq]"       cross-validation against Cirq
+#     pip install -e ".[braket]"     cross-validation against Amazon Braket
+#     pip install -e ".[quil]"       Quil export and Rigetti gate set
+#     pip install -e ".[chemistry]"  PySCF and OpenFermion cross-checks
+#     pip install -e ".[benchmarks]" pandas and networkx for benchmark scripts
+#
+# None of these are imported by the package itself, which is why the test suite
+# runs without them.
